@@ -22,7 +22,7 @@ namespace Scopophobia
         internal static ScopophobiaPlugin Instance;
 
         public static SpawnableEnemyWithRarity maskedPrefab;
-
+        public static SpawnableEnemyWithRarity shyEnemy;
         public static ManualLogSource logger;
         public static float ShyGuyVolume;
         public static SpawnableEnemyWithRarity shyPrefab;
@@ -65,7 +65,7 @@ namespace Scopophobia
             ShyGuyVolume = Scopophobia.Config.VolumeConfig.Value;
             TerminalNode val = Assets.LoadAsset<TerminalNode>("ShyGuyTerminal.asset");
             TerminalKeyword val2 = Assets.LoadAsset<TerminalKeyword>("ShyGuyKeyword.asset");
-            NetworkPrefabs.RegisterNetworkPrefab(shyGuy.enemyPrefab);
+            NetworkPrefabs.RegisterNetworkPrefab(shyGuy.enemyPrefab); 
             Enemies.RegisterEnemy(shyGuy, useWeight, Levels.LevelTypes.All, Enemies.SpawnType.Default, val, val2);
             logger.LogInfo("Scopophobia | SCP-096 has entered the facility. All remaining personnel proceed with caution.");
             harmony.PatchAll(typeof(Plugin));

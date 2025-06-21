@@ -60,6 +60,7 @@ internal class ShyGuySpawnSettings
                 SelectableLevel obj = ___currentLevel;
                 obj.maxOutsideEnemyPowerCount += shyEnemy.enemyType.MaxCount * (int)shyEnemy.enemyType.PowerLevel; //typecast as int to fix PowerLevel, ty MaskedOverhaulFork
             }
+            
             ___currentLevel.Enemies.Add(shyEnemy);
         }
         catch { }
