@@ -477,12 +477,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1253853259672348}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4749004807472915}
+  m_Father: {fileID: 4191350184518829}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
 --- !u!82 &82497066530386577
 AudioSource:
@@ -689,9 +689,9 @@ GameObject:
   - component: {fileID: 23203590621876837}
   - component: {fileID: 65913994609552612}
   - component: {fileID: 114427126942645857}
-  m_Layer: 19
+  m_Layer: 22
   m_Name: ScanNode
-  m_TagString: AINode
+  m_TagString: unknown_20029
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -718,7 +718,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322895033468172}
-  m_Mesh: {fileID: 4300000, guid: b11537ed4b53e3141ac9feee02859948, type: 2}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &23203590621876837
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -729,7 +729,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -798,10 +798,10 @@ MonoBehaviour:
   minRange: 1
   requiresLineOfSight: 1
   headerText: Shy guy
-  subText: 
+  subText: '[DANGER]'
   scrapValue: 0
   creatureScanID: 9696
-  nodeType: 1
+  nodeType: 0
 --- !u!1 &1325737393544092
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,7 +1122,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ecbea5959611ec9489129e82d13965c0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1301,9 +1301,9 @@ GameObject:
   - component: {fileID: 4501644949699801}
   - component: {fileID: 33199775410505127}
   - component: {fileID: 23458958703546321}
-  m_Layer: 19
+  m_Layer: 14
   m_Name: MapDot
-  m_TagString: Enemy
+  m_TagString: unknown_20029
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1330,7 +1330,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606359790345186}
-  m_Mesh: {fileID: 4300000, guid: b11537ed4b53e3141ac9feee02859948, type: 2}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &23458958703546321
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1848,12 +1848,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: {fileID: 11400000, guid: 8e3fa46f4cda82544852959fed057682, type: 2}
-  skinnedMeshRenderers: []
+  skinnedMeshRenderers:
+  - {fileID: 137155433139598259}
   meshRenderers: []
   creatureAnimator: {fileID: 95760043015646158}
   creatureVoice: {fileID: 82286839826629247}
   creatureSFX: {fileID: 82711277904658589}
-  eye: {fileID: 4810006241302499}
+  eye: {fileID: 0}
   dieSFX: {fileID: 8300000, guid: 917556e3da47ccb479c7e993b4d9fe94, type: 3}
   enemyBehaviourStates:
   - name: Roaming
@@ -2190,7 +2191,6 @@ Transform:
   - {fileID: 4912794151175300}
   - {fileID: 4074405063011566}
   - {fileID: 4581986644000403}
-  - {fileID: 4634584465869188}
   m_Father: {fileID: 4191350184518829}
   m_LocalEulerAnglesHint: {x: -90.00001, y: -0, z: 0}
 --- !u!1 &1789543394941159
@@ -2398,7 +2398,7 @@ GameObject:
   - component: {fileID: 114715389061618752}
   m_Layer: 19
   m_Name: SCP096Model
-  m_TagString: Enemy
+  m_TagString: unknown_20028
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2419,6 +2419,7 @@ Transform:
   - {fileID: 4749004807472915}
   - {fileID: 4056247627867868}
   - {fileID: 4079054502851161}
+  - {fileID: 4634584465869188}
   m_Father: {fileID: 4593658435664977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95760043015646158
@@ -2783,7 +2784,7 @@ Transform:
   m_GameObject: {fileID: 1166986581669638627}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.02, y: 2.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
