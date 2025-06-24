@@ -11,10 +11,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3cecf05b78b173605122a700874719c, type: 3}
   m_Name: ShyGuyKeyword
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   word: shy guy
   isVerb: 0
   compatibleNouns: []
-  specialKeywordResult: {fileID: 11400000, guid: 444506899ca865b4cb35f42c489688f7, type: 2}
+  specialKeywordResult: {fileID: 11400000, guid: 444506899ca865b4cb35f42c489688f7,
+    type: 2}
   defaultVerb: {fileID: 11400000}
   accessTerminalObjects: 0

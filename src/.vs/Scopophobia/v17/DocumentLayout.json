@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|solutionrelative:scopophobiaplugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|c:\\users\\mrfaw\\documents\\github\\scopophobia\\src\\config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|solutionrelative:config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|c:\\users\\mrfaw\\documents\\github\\scopophobia\\src\\shyguy\\ai\\shyguyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|solutionrelative:shyguy\\ai\\shyguyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -29,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|c:\\users\\mrfaw\\documents\\github\\scopophobia\\src\\patches\\shyguyspawnsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|solutionrelative:patches\\shyguyspawnsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|c:\\users\\mrfaw\\documents\\github\\scopophobia\\src\\config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|solutionrelative:config.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{16D11CFF-034B-4CB5-A919-872F684C3788}|Scopophobia.csproj|c:\\users\\mrfaw\\documents\\github\\scopophobia\\src\\scopophobia.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
@@ -71,26 +71,27 @@
               "RelativeDocumentMoniker": "ScopophobiaPlugin.cs",
               "ToolTip": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\ScopophobiaPlugin.cs",
               "RelativeToolTip": "ScopophobiaPlugin.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAgwFMAAABQAAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAQwD8AAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-30T16:30:00.755Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
               "Title": "Config.cs",
               "DocumentMoniker": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\Config.cs",
               "RelativeDocumentMoniker": "Config.cs",
               "ToolTip": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\Config.cs",
               "RelativeToolTip": "Config.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAQwHYAAAChAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAQwHYAAAChAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-30T16:27:32.558Z"
+              "WhenOpened": "2024-08-30T16:27:32.558Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "SyncedInstance.cs",
               "DocumentMoniker": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\SyncedInstance.cs",
               "RelativeDocumentMoniker": "SyncedInstance.cs",
@@ -102,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ShyGuySpawnSettings.cs",
               "DocumentMoniker": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\Patches\\ShyGuySpawnSettings.cs",
               "RelativeDocumentMoniker": "Patches\\ShyGuySpawnSettings.cs",
@@ -114,7 +115,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Scopophobia.csproj",
               "DocumentMoniker": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\Scopophobia.csproj",
               "RelativeDocumentMoniker": "Scopophobia.csproj",
@@ -126,7 +127,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ShyGuyAI.cs",
               "DocumentMoniker": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\ShyGuy\\AI\\ShyGuyAI.cs",
               "RelativeDocumentMoniker": "ShyGuy\\AI\\ShyGuyAI.cs",
@@ -139,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MyPluginInfo.cs",
               "DocumentMoniker": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\MyPluginInfo.cs",
               "RelativeDocumentMoniker": "MyPluginInfo.cs",
@@ -152,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "GetShyGuyPrefabForLaterUse.cs",
               "DocumentMoniker": "C:\\Users\\mrfaw\\Documents\\GitHub\\Scopophobia\\src\\Patches\\GetShyGuyPrefabForLaterUse.cs",
               "RelativeDocumentMoniker": "Patches\\GetShyGuyPrefabForLaterUse.cs",
