@@ -1,3 +1,7 @@
+# 1.2.8
+## Here we are with more fixes
++ Fix Audio RPC issue (Thanks Lunxara)
++ Fix for shy guy randomly walking to the ship, and having a meet and greet (lmao)
 # 1.2.7
 ## Navigation Fixes
 + Fix a revert in navigation (Fixes Wesley Moons) (Thanks @SamBammers, @Lunxara)

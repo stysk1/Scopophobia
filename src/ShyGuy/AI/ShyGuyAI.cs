@@ -324,7 +324,7 @@ namespace ShyGuy.AI
                         agent.stoppingDistance = 4f;
                         addPlayerVelocityToDestination = 0f;
                         PlayerControllerB targetPlayer = base.targetPlayer;
-                        if (roamWaitTime <= 20f && !roamMap.inProgress && base.targetPlayer == null)
+                        if (roamWaitTime <= 20f && roamMap.inProgress && base.targetPlayer == null)
                         {
                             StopSearch(roamMap);
                             lastInterval = Time.realtimeSinceStartup;
@@ -722,47 +722,20 @@ namespace ShyGuy.AI
             base.Update();
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [ServerRpc]
         public void PlayAudioFxServerRpc(int audioClipID)
         {
-            // Play locally on server
-            PlayAudioFX(audioClipID);
-
-            // Then tell all clients to play it
             PlayAudioFXClientRpc(audioClipID);
         }
         [ClientRpc]
         public void PlayAudioFXClientRpc(int audioClipID)
         {
-            PlayAudioFX(audioClipID);
-        }
-        public void PlayAudioFX(int audioClipID)
-        {
-            if (audioClipID == currentClipID)
-                return;
-
-            AudioSource targetSource = (audioClipID == 2 || audioClipID == 3) ? farAudio : creatureVoice;
-            AudioClip? clip = audioClipID switch
+            switch (audioClipID)
             {
-                0 => crySittingSFX,
-                1 => crySFX,
-                2 => panicSFX,
-                3 => screamSFX,
-                _ => null
-            };
-
-            if (clip != null)
-            {
-                syncedAudioClipID.Value = audioClipID;
-                targetSource.Stop();
-                targetSource.volume = (audioClipID == 3)
-                    ? Config.VolumeConfigs * 0.1f - 0.1f
-                    : Config.VolumeConfigs * 0.1f;
-
-                targetSource.clip = clip;
-                targetSource.loop = true;
-                targetSource.Play();
-                currentClipID = audioClipID;
+                case 0: farAudio.Stop(); creatureVoice.Stop(); creatureVoice.volume = Config.VolumeConfigs * 0.1f; creatureVoice.clip = crySittingSFX; creatureVoice.loop = true; float preTime = creatureVoice.time; creatureVoice.time = preTime; creatureVoice.Play(); break;
+                case 1: creatureVoice.Stop(); creatureVoice.volume = Config.VolumeConfigs * 0.1f; creatureVoice.clip = crySFX; creatureVoice.loop = true; float preTime2 = creatureVoice.time; creatureVoice.time = preTime2; creatureVoice.Play(); break;
+                case 2: creatureVoice.Stop(); farAudio.volume = Config.VolumeConfigs * 0.1f; farAudio.clip = panicSFX; float preTime3 = farAudio.time; farAudio.loop = true; farAudio.time = preTime3; farAudio.Play(); break;
+                case 3: farAudio.Stop(); farAudio.volume = Config.VolumeConfigs * 0.1f - 0.1f; farAudio.clip = screamSFX; float preTime4 = farAudio.time; farAudio.loop = true; farAudio.time = preTime4; farAudio.Play(); break;
             }
         }
         public override void OnNetworkSpawn()//fix for late joiners who can't hear shy guy
