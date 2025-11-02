@@ -167,6 +167,7 @@ namespace ShyGuy.AI
                 leftEye.gameObject.SetActive(value: false);
                 rightEye.gameObject.SetActive(value: false);
             }
+            
             if (Config.bloodyTexture && bloodyMaterial != null)
             {
                 Transform model = transform.Find("SCP096Model");

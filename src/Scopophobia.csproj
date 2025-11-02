@@ -67,6 +67,11 @@
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Res\**" />
+    <EmbeddedResource Remove="Res\**" />
+    <None Remove="Res\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="icon.jpg" />
   </ItemGroup>
 
@@ -88,7 +93,7 @@
 
   <ItemGroup>
     <Reference Include="LethalConfig">
-      <HintPath>..\..\..\..\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\Cod3r Test Pack\BepInEx\plugins\AinaVT-LethalConfig\LethalConfig\LethalConfig.dll</HintPath>
+      <HintPath>Res\LethalConfig.dll</HintPath>
     </Reference>
   </ItemGroup>
 

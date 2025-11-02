@@ -51,6 +51,5 @@ C:\Users\mrfaw\Documents\GitHub\Scopophobia\src\bin\Debug\netstandard2.1\Scopoph
 C:\Users\mrfaw\Documents\GitHub\Scopophobia\src\bin\Debug\netstandard2.1\Scopophobia.dll
 C:\Users\mrfaw\Documents\GitHub\Scopophobia\src\obj\Debug\netstandard2.1\Scopophobia.dll
 C:\Users\mrfaw\Documents\GitHub\Scopophobia\src\bin\Debug\netstandard2.1\LethalConfig.dll
-C:\Users\mrfaw\Documents\GitHub\Scopophobia\src\bin\Debug\netstandard2.1\LethalConfig.pdb
 C:\Users\mrfaw\Documents\GitHub\Scopophobia\src\obj\Debug\netstandard2.1\Scopophobia.AssemblyInfoInputs.cache
 C:\Users\mrfaw\Documents\GitHub\Scopophobia\src\obj\Debug\netstandard2.1\Scopophobia.AssemblyInfo.cs
