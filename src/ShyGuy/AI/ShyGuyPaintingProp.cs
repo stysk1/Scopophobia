@@ -214,8 +214,8 @@ namespace Scopophobia
         private IEnumerator InitializeAI(ShyGuyAI ai, PlayerControllerB target)
         {
             yield return new WaitForSeconds(Config.triggerTime);//delay by trigger
-            ai.ChangeOwnershipOfEnemy(target.actualClientId);
             ai.AddTargetToList((int)target.actualClientId);
+            ai.ChangeOwnershipOfEnemy(target.actualClientId);
             ResetSpawnState();
         }
     }

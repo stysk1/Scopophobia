@@ -94,8 +94,9 @@ namespace ShyGuy.AI
         public static List<EntranceTeleport> insideTeleports = [];
         public bool pathingToTeleport;
         public Vector3 closestTeleportPosition;
+        public Vector3 ClosestTeleportExitPos;
         public static EntranceTeleport mainEntrance;
-        public EntranceTeleport closestTeleport;
+        public EntranceTeleport? closestTeleport;
 
         private bool roamShouldSit;
 
@@ -118,7 +119,7 @@ namespace ShyGuy.AI
         private bool isInElevatorStartRoom;
         public bool hasBeenSpawned;
         private float timeAtLastUsingEntrance;
-        public NavMeshAgent agent = null;
+        public new NavMeshAgent? agent = null;
         public static MineshaftElevatorController elevatorScript;
         public List<PlayerControllerB> SCP096Targets = new List<PlayerControllerB>();
         public override void Start()
@@ -179,10 +180,7 @@ namespace ShyGuy.AI
                     if (modelMesh != null)
                     {
                         SkinnedMeshRenderer skinnedModel = modelMesh.GetComponent<SkinnedMeshRenderer>();
-                        if (skinnedModel != null)
-                        {
-                            skinnedModel.material = bloodyMaterial;
-                        }
+                        skinnedModel?.material = bloodyMaterial;
                     }
                 }
             }
@@ -456,27 +454,27 @@ namespace ShyGuy.AI
                                 //ScopophobiaPlugin.logger.LogInfo("Map Interior is Mineshaft, Committing to Elevator Checks");
                                 if (!isInElevatorStartRoom)//if not in the Elevator Start Room, Need to call the Elevator
                                 {
-                                    if (Vector3.Distance(targetPlayer.transform.position, mainEntrancePosition) < 14f || !targetPlayer.isInsideFactory) { UseElevator(goUp: true); ScopophobiaPlugin.logger.LogInfo("Flag 2 set, Shy Guy Going Up"); break; }
-                                    else break;
+                                    if (Vector3.Distance(targetPlayer.transform.position, mainEntrancePosition) < 14f || !targetPlayer.isInsideFactory) { UseElevator(goUp: true); break; }
+                                    else return;
                                 }
                                 else if (!targetPlayer.isPlayerDead && targetPlayer.isPlayerControlled && targetPlayer.isInsideFactory)//Is the player Inside, or hiding, Lets Distance check them from the Top Point
                                 {
-                                    if (Vector3.Distance(targetPlayer.transform.position, mainEntrancePosition) > 12f) { UseElevator(goUp: false); ScopophobiaPlugin.logger.LogInfo("Flag 3 set, Shy Guy Going Down"); break; }
-                                    else break;
+                                    if (Vector3.Distance(targetPlayer.transform.position, mainEntrancePosition) > 12f) { UseElevator(goUp: false);  break; }
+                                    else return;
                                 }
                             }
-                            if (targetPlayer.isInsideFactory != !isOutside)
+                            if (targetPlayer.isInsideFactory != !isOutside && Config.canExitFacility)//I think we should have this here, so he can run the config for exiting facility
                             {//new code. if not already pathing, lets find closest teleport. Then move to it if not right there. Else, continue as normal.
                                 if (!pathingToTeleport)
                                 {
-                                    ScopophobiaPlugin.Instance.LogInfoExtended($"{targetPlayer.name} Is Outside: {targetPlayer.isInsideFactory}, Looking for Teleport");
+                                    ScopophobiaPlugin.Instance.LogInfoExtended($"{targetPlayer.name} Is Outside: {!targetPlayer.isInsideFactory}, Looking for Teleport");
                                     GetClosestTeleportAndMove();
                                 }
-                                else//separate these into their own loop, otherwise shy guy gets into a bugged state of only going out once
+                                else if(pathingToTeleport)//separate these into their own loop, otherwise shy guy gets into a bugged state of only going out once
                                 {
-                                    if (Vector3.Distance(transform.position, closestTeleport.entrancePoint.position) < 2.5f)//door distance check
+                                    if (Vector3.Distance(transform.position, closestTeleport.entrancePoint.position) < 3f)//door distance check
                                     {
-                                        TeleAndRefreshEnemy(closestTeleport.exitPoint.position, !isOutside);
+                                        TeleAndRefreshEnemy(closestTeleport.exitScript.entrancePoint.position, !isOutside);
                                         agent.speed = 0f;
                                         return;
                                     }
@@ -490,15 +488,7 @@ namespace ShyGuy.AI
                             }
                             else//Player in sights, continuing attack strategy
                             {
-                                if (PathIsIntersectedByLineOfSight(RoundManager.Instance.GetNavMeshPosition(targetPlayer.transform.position, default(NavMeshHit), 5f, -1), false, false, true))
-                                {
-                                    SetMovingTowardsTargetPlayer(targetPlayer);
-                                }
-                                else
-                                {
-                                    SetMovingTowardsTargetPlayer(targetPlayer);
-                                }
-
+                                SetMovingTowardsTargetPlayer(targetPlayer);
                             }
                         }
                         else if (SCP096Targets.Count <= 0)
@@ -528,7 +518,7 @@ namespace ShyGuy.AI
                     continue;
                 }
                 NavMeshPath path = new NavMeshPath();
-                if (!agent.CalculatePath(tele.entrancePoint.position, path) || path.status == NavMeshPathStatus.PathComplete)
+                if (agent.CalculatePath(tele.entrancePoint.position, path) && path.status == NavMeshPathStatus.PathComplete)
                 {
                     float dist = Vector3.Distance(transform.position, tele.entrancePoint.position);
                     if (dist < closestDistance)
@@ -556,10 +546,10 @@ namespace ShyGuy.AI
             Vector3 navMeshPosition = RoundManager.Instance.GetNavMeshPosition(Pos, default(NavMeshHit), 5f, -1);
             if (IsOwner)
             {
-                agent.enabled = false;
+                agent?.enabled = false;
                 transform.position = navMeshPosition;
-                agent.enabled = true;
-                agent.Warp(navMeshPosition);
+                agent?.enabled = true;
+                agent?.Warp(navMeshPosition);
             }
             else
             {
@@ -567,25 +557,24 @@ namespace ShyGuy.AI
             }
             serverPosition = navMeshPosition;
             SetEnemyOutside(setOutside);
-            pathingToTeleport = false;
-            if (closestTeleport.doorAudios != null && closestTeleport.doorAudios.Length != 0)
+            if (closestTeleport?.doorAudios != null && closestTeleport.doorAudios.Length != 0)
             {
                 closestTeleport.entrancePointAudio.PlayOneShot(closestTeleport.doorAudios[0]);
                 WalkieTalkie.TransmitOneShotAudio(closestTeleport.entrancePointAudio, closestTeleport.doorAudios[0], 1f);
             }
             closestTeleport = null;
             pathingToTeleport = false;
-            closestTeleportPosition = mainEntrancePosition;
+            closestTeleportPosition = Vector3.zero;
         }
         private bool UseElevator(bool goUp)
         {
             Vector3 vector = ((!goUp) ? elevatorScript.elevatorTopPoint.position : elevatorScript.elevatorBottomPoint.position);
-            Debug.Log($"goUp: {goUp}");
-            Debug.Log($"{elevatorScript.elevatorFinishedMoving}, {!PathIsIntersectedByLineOfSight(elevatorScript.elevatorInsidePoint.position, calculatePathDistance: false, avoidLineOfSight: false)}");
+            ScopophobiaPlugin.Instance.LogInfoExtended($"goUp: {goUp}");
+            ScopophobiaPlugin.Instance.LogInfoExtended($"{elevatorScript.elevatorFinishedMoving}, {!PathIsIntersectedByLineOfSight(elevatorScript.elevatorInsidePoint.position, calculatePathDistance: false, avoidLineOfSight: false)}");
             if (elevatorScript.elevatorFinishedMoving && !PathIsIntersectedByLineOfSight(elevatorScript.elevatorInsidePoint.position, calculatePathDistance: false, avoidLineOfSight: false))
             {
-                Debug.Log($"goUp: {goUp}, elevatormovingdown: {elevatorScript.elevatorMovingDown}");
-                Debug.Log($"{elevatorScript.elevatorDoorOpen}, {Vector3.Distance(transform.position, elevatorScript.elevatorInsidePoint.position) < 1f}, {elevatorScript.elevatorMovingDown == goUp}");
+                ScopophobiaPlugin.Instance.LogInfoExtended($"goUp: {goUp}, elevatormovingdown: {elevatorScript.elevatorMovingDown}");
+                ScopophobiaPlugin.Instance.LogInfoExtended($"{elevatorScript.elevatorDoorOpen}, {Vector3.Distance(transform.position, elevatorScript.elevatorInsidePoint.position) < 1f}, {elevatorScript.elevatorMovingDown == goUp}");
                 if (elevatorScript.elevatorDoorOpen && Vector3.Distance(transform.position, elevatorScript.elevatorInsidePoint.position) < 1f && elevatorScript.elevatorMovingDown == goUp)
                 {
                     elevatorScript.PressElevatorButtonOnServer(requireFinishedMoving: true);
@@ -643,7 +632,7 @@ namespace ShyGuy.AI
                     if (!Config.hasMaxTargets || SCP096Targets.Count < Config.maxTargets)
                     {
                         ScopophobiaPlugin.Instance.LogInfoExtended($"Adding {GameNetworkManager.Instance.localPlayerController.actualClientId} To Targets. Has Seen Face: {canSeeFace}");
-                        AddTargetToList((int)GameNetworkManager.Instance.localPlayerController.playerClientId);
+                        AddTargetToList((int)GameNetworkManager.Instance.localPlayerController.actualClientId);
                     }
                     if (currentBehaviourStateIndex == 0)
                     {
@@ -741,6 +730,20 @@ namespace ShyGuy.AI
             else allAINodes = GameObject.FindGameObjectsWithTag("AINode");
         }
 
+        public override void OnCollideWithEnemy(Collider other, EnemyAI collidedEnemy = null)
+        {
+            if (other.gameObject.GetComponent<EnemyAI>()) return;
+            base.OnCollideWithEnemy(other, collidedEnemy);
+            if(!inKillAnimation && !isEnemyDead && currentBehaviourStateIndex == 2)
+            {
+                if(collidedEnemy.enemyType != null)
+                {
+                    collidedEnemy.HitEnemy(1,null,true);
+                }
+            }
+
+        }
+
         public override void OnCollideWithPlayer(Collider other)
         {
             if (!other.gameObject.GetComponent<PlayerControllerB>())
@@ -817,12 +820,8 @@ namespace ShyGuy.AI
             }
             int preAmount = SCP096Targets.Count;
             playerScript.KillPlayer(playerScript.transform.position, true, CauseOfDeath.Mauling, 0);
-
-            if (CoronerProxy.Enabled && CoronerProxy.SHY_GUY != null)
-            {
-                CoronerProxy.SetDeathCause(playerId);
-            }
-            AddTargetToList(playerId, remove: true);
+            if (CoronerProxy.Ready) CoronerProxy.SetDeathCause(playerId);
+                AddTargetToList(playerId, remove: true);
             creatureSFX.clip = killPlayerSFX;
             creatureSFX.Play();
             creatureAnimator.SetInteger("TargetsLeft", preAmount - 1);
@@ -833,22 +832,16 @@ namespace ShyGuy.AI
             }
             ScopophobiaPlugin.Instance.LogInfoExtended($"Running Kill Player Client Rpc Final. Current Target Count: {SCP096Targets.Count}");
             if (Config.deathMakesBloody && bloodyMaterial != null)
-            {
-                Transform model = transform.Find("SCP096Model");
-                if (model != null)
-                {
-                    Transform modelMesh = model.Find("tsg_placeholder");
-                    if (modelMesh != null)
-                    {
-                        SkinnedMeshRenderer skinnedModel = modelMesh.GetComponent<SkinnedMeshRenderer>();
-                        skinnedModel?.material = bloodyMaterial;
-                    }
-                }
-            }
+                ApplyBloodyMaterial();
             yield return new WaitForSeconds(1f);
             inKillAnimation = false;
         }
+        private void ApplyBloodyMaterial()
+        {
+            var renderer = transform.Find("SCP096Model")?.Find("tsg_placeholder")?.GetComponent<SkinnedMeshRenderer>();
 
+            renderer?.material = bloodyMaterial;
+        }
         public void SitDown()
         {
             SwitchToBehaviourState(0);
@@ -1001,7 +994,7 @@ namespace ShyGuy.AI
         {
             if (shipDoor == null)
             {
-                Debug.LogError("Scopophobia error: ship door is null");
+                ScopophobiaPlugin.Instance.LogInfoExtended("Scopophobia error: ship door is null");
                 return false;
             }
             if (pryingOpenDoor)
@@ -1043,8 +1036,8 @@ namespace ShyGuy.AI
             targetPlayer = null;
             inKillAnimation = false;
             pryingOpenDoor = false;
-            updateDestinationInterval = 0.1f;
             agent.autoTraverseOffMeshLink = true;
+            agent.autoRepath = true;
             SCP096Targets.Clear();
             creatureAnimator.SetFloat("VelocityX", 0f);
             creatureAnimator.SetFloat("VelocityZ", 0f);

@@ -127,11 +127,7 @@ namespace Scopophobia
 
             List<SpawnableEnemyWithRarity> EnemyList = GetEnemyList(level, enemyListType);
 
-            SpawnableEnemyWithRarity spawnableEnemyWithRarity = new SpawnableEnemyWithRarity
-            {
-                enemyType = enemyType,
-                rarity = spawnWeight
-            };
+            SpawnableEnemyWithRarity spawnableEnemyWithRarity = new SpawnableEnemyWithRarity(enemyType, spawnWeight);
 
             EnemyList.Add(spawnableEnemyWithRarity);
 

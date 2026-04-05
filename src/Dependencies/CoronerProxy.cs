@@ -1,67 +1,89 @@
 ﻿using BepInEx.Bootstrap;
-using System;
-using System.Linq;
-using System.Reflection;
 using GameNetcodeStuff;
+using System;
+using System.Reflection;
 
 namespace Scopophobia.Dependencies
-{    
-    /// <summary>
-    ///This is just a quick reflection class so I don't need to depend on Coroner at all, and Scopo can successfully load without it ever being present.
-    ///Can probably be much cleaner, so
-    /// /TODO: Clean up reflector class
-    /// </summary>
+{
     internal static class CoronerProxy
     {
         public const string PLUGIN_GUID = "com.elitemastereric.coroner";
+        private const string CORONER_SCOPO_GUID = "Turkeysteaks.coroner.scopophobia";
+        private const string KEY = "DeathEnemyShyGuy";
+
         public static bool Enabled => Chainloader.PluginInfos.ContainsKey(PLUGIN_GUID);
-        public static bool CoronerScopoFound = Chainloader.PluginInfos.ContainsKey("Turkeysteaks.coroner.scopophobia");
+        public static bool CoronerScopoFound => Chainloader.PluginInfos.ContainsKey(CORONER_SCOPO_GUID);
+        public static bool Ready => _initialized && Enabled && _shyGuyCause != null && _setCauseMethod != null;
+        private static bool _initialized;
 
-        public static string KEY = "Mauled To Death By Shy Guy";
+        public static object? _shyGuyCause;
 
-        public static object? SHY_GUY;
+        private static MethodInfo? _registerMethod;
+        private static MethodInfo? _isRegisteredMethod;
+        private static MethodInfo? _setCauseMethod;
+        private static MethodInfo? _getCauseByKeyMethod;
 
-        private static MethodInfo? registerMethod;
-        private static readonly MethodInfo? isRegisteredMethod;
-        private static MethodInfo? setCauseMethod;
-
-
-        public static void RegisterDeathType()
+        public static void Initialize()
         {
-            if (!Enabled || SHY_GUY != null || CoronerScopoFound) return;//add blocklist so we don't set Coroner Data when CoronerScopo is installed, as a hotfix, since idk when it'll be deprecated
+            if (_initialized || !Enabled || CoronerScopoFound)
+                return;
 
-            var coronerAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                .FirstOrDefault(a => a.GetName().Name == "Coroner");
-            if (coronerAssembly == null) return;
+            _initialized = true;
 
-            var apiType = coronerAssembly.GetType("Coroner.API");
-            var causeType = coronerAssembly.GetType("Coroner.AdvancedCauseOfDeath");
-
-            var isRegisteredMethod = apiType.GetMethod("IsRegistered", BindingFlags.Public | BindingFlags.Static);
-            registerMethod = apiType.GetMethod("Register", [typeof(string)]);
-            setCauseMethod = apiType.GetMethod("SetCauseOfDeath", BindingFlags.Public | BindingFlags.Static, null, [typeof(PlayerControllerB), causeType], null);
-
-            bool registered = (bool)isRegisteredMethod.Invoke(null, [KEY]);
-
-            if (!registered)
+            try
             {
-                SHY_GUY = registerMethod.Invoke(null, [KEY]);
+                var coronerAssembly = Chainloader.PluginInfos[PLUGIN_GUID].Instance.GetType().Assembly;
+
+                if (coronerAssembly == null)
+                    return;
+
+                var apiType = coronerAssembly.GetType("Coroner.API");
+                var causeType = coronerAssembly.GetType("Coroner.AdvancedCauseOfDeath");
+
+                if (apiType == null || causeType == null)
+                    return;
+
+                _registerMethod = apiType.GetMethod("Register", [typeof(string)]);
+                _isRegisteredMethod = apiType.GetMethod("IsRegistered", BindingFlags.Public | BindingFlags.Static);
+                _getCauseByKeyMethod = apiType.GetMethod("GetCauseOfDeathByKey", BindingFlags.Public | BindingFlags.Static);
+
+                _setCauseMethod = apiType.GetMethod("SetCauseOfDeath",BindingFlags.Public | BindingFlags.Static,null,[typeof(PlayerControllerB), causeType],null);
+
+                if (_registerMethod == null || _setCauseMethod == null || _isRegisteredMethod == null)
+                    return;
+
+                bool registered = (bool)_isRegisteredMethod.Invoke(null, [KEY]);
+
+                if (!registered)
+                {
+                    _shyGuyCause = _registerMethod.Invoke(null, [KEY]);
+                }
+                else if (_getCauseByKeyMethod != null)
+                {
+                    _shyGuyCause = _getCauseByKeyMethod.Invoke(null, [KEY]);
+                }
             }
-            else
+            catch (Exception e)
             {
-                var getCauseMethod = apiType.GetMethod("GetCauseOfDeathByKey", BindingFlags.Public | BindingFlags.Static);
-                if (getCauseMethod != null)
-                    SHY_GUY = getCauseMethod.Invoke(null, [KEY]);
+                ScopophobiaPlugin.Instance.LogWarningExtended($"Failed to initialize Coroner compatibility: {e}");
             }
         }
 
         public static void SetDeathCause(int playerId)
         {
-            if (!Enabled || SHY_GUY == null) return;
+            if (_shyGuyCause == null || _setCauseMethod == null)
+                return;
 
-            var playerScript = StartOfRound.Instance.allPlayerScripts[playerId];
+            var player = StartOfRound.Instance.allPlayerScripts[playerId];
 
-            setCauseMethod?.Invoke(null, [playerScript, SHY_GUY]);
+            try
+            {
+                _setCauseMethod.Invoke(null,[player,_shyGuyCause]);
+            }
+            catch (Exception e)
+            {
+                ScopophobiaPlugin.Instance.LogWarningExtended($"Failed to set Coroner death cause: {e}");
+            }
         }
     }
 }

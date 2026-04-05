@@ -14,9 +14,8 @@ using BepInEx.Bootstrap;
 namespace Scopophobia
 {
 
-    [BepInPlugin("Scopophobia", "Scopophobia", "1.3.2")]
+    [BepInPlugin("Scopophobia", "Scopophobia", "1.3.4")]
     [BepInDependency(LethalConfigProxy.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency(CoronerProxy.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public class ScopophobiaPlugin : BaseUnityPlugin
     {
 
@@ -86,7 +85,7 @@ namespace Scopophobia
             harmony.PatchAll(typeof(BeltBagItemPatch));
             if (CoronerProxy.Enabled)
             {
-                CoronerProxy.RegisterDeathType();
+                CoronerProxy.Initialize();
             }
         }
         private static void NetcodePatchAwake()

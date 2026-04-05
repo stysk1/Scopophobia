@@ -1,3 +1,10 @@
+# 1.3.4
+## v80 Spawn Fix
++ Fixes an error thrown when grabbing enemy data for the current Level. (Reported by @Glacius on Discord) 
+# 1.3.3
+## V80 Build
++ This is an early V80 Beta build. Please report issues in the Lethal Company Modding Discord, or to me directly on Github.
++ **NOTE** There are possible known issues with this release, as I havent had a good opportunity to debug everything properly. Previously reported issues are still possible, and I'll work out these bugs once and for all at some point soon.
 # 1.3.2
 ## Minor Bug fixes
 + Fix a regression with the Shy Guy Painting triggering more than once, will now only trigger if it hasn't already triggered.

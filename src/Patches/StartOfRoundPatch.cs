@@ -4,7 +4,7 @@ using Scopophobia;
 [HarmonyPatch(typeof(StartOfRound))]
 internal static class StartOfRoundPatch
 {
-    [HarmonyPatch(nameof(StartOfRound.Start))]
+    [HarmonyPatch(typeof(StartOfRound), "Start")]
     [HarmonyPostfix]
     private static void StartPatch()
     {

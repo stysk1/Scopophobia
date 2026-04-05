@@ -31,7 +31,7 @@ namespace Scopophobia
             }
 
             EnemyType enemyType = EnemyHelper.GetEnemyType(EnemyName);
-
+            
             if (enemyType == null)
             {
                 Plugin.logger.LogError($"Failed to initialize enemy data list. EnemyType is null. (EnemyName: {EnemyName})");
