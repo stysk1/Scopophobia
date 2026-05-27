@@ -1,20 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <!-- BepInEx Properties -->
   <PropertyGroup>
-		<!-- This is the GUID of your mod. -->
     <AssemblyName>Scopophobia</AssemblyName>
-
-		<!-- This is the name of your mod. This will be used by tcli when building our Thunderstore package. -->
     <Product>Scopophobia</Product>
-    <!-- Change to whatever version you're currently on. This will be used by tcli when building our Thunderstore package. -->
-    <Version>1.3.2</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <!-- Thunderstore CLI stuff -->
   <PropertyGroup>
-    <!-- Your Thunderstore Team name. This will be used by tcli when building our Thunderstore package. -->
-    <ThunderstoreTeam>theunknowncod3r</ThunderstoreTeam>
-    <!-- Configure description for Thunderstore at ./Thunderstore/thunderstore.toml -->
+    <ThunderstoreTeam>stysk1</ThunderstoreTeam>
   </PropertyGroup>
 
   <!-- Project Properties -->
@@ -23,22 +17,17 @@
     <RootNamespace>Scopophobia</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-	  <Authors>Adds SCP-096 Shy Guy To Lethal Company, Complete with Custom Animations, Sound effects, and more.</Authors>
-	  <PackageVersion>1.3.2</PackageVersion>
-	  <PackageIcon>icon.jpg</PackageIcon>
+    <Authors>stysk1</Authors>
+    <PackageVersion>2.0.0</PackageVersion>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <!-- Version of the game supported by the plugin -->
+    <!-- https://www.nuget.org/packages/LethalCompany.GameLibs.Steam -->
+    <GameVersion>81.0.5-ngd.0</GameVersion>
   </PropertyGroup>
 
   <!-- Enable Nullable for better IDE null-checking -->
   <PropertyGroup>
     <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <!-- Set NuGet Sources -->
-  <PropertyGroup>
-    <RestoreAdditionalProjectSources>
-      https://api.nuget.org/v3/index.json;
-      https://nuget.bepinex.dev/v3/index.json
-    </RestoreAdditionalProjectSources>
   </PropertyGroup>
 
   <!-- Disable Publicizer Warnings -->
@@ -50,15 +39,11 @@
   <PropertyGroup>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>embedded</DebugType>
-    <!--
-    Trim the project path to prevent players from potentially
-    viewing Private Information in stack traces.
-    -->
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
     <SignAssembly>False</SignAssembly>
     <Title>Scopophobia</Title>
     <Description>Adds SCP-096 Shy Guy To Lethal Company, Complete with Custom Animations, Sound effects, and more.</Description>
-    <Copyright>TheUnknownCod3r</Copyright>
+    <Copyright>stysk1</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
@@ -74,8 +59,10 @@
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-    <PackageReference Include="UnityEngine.Modules" Version="2022.3.62" IncludeAssets="compile" />
     <PackageReference Include="Evaisa.LethalLib" Version="1.2.0" />
+    <!-- Unity core/runtime modules. GameLibs.Steam doesn't ship UnityEngine.dll / CoreModule;
+         NetcodePatcher needs them to resolve referenced types during patching. -->
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.62" IncludeAssets="compile" />
   </ItemGroup>
 
   <ItemGroup>
@@ -85,37 +72,32 @@
     </Page>
   </ItemGroup>
 
+  <!-- Game reference assemblies via NuGet (publicized). No local Steam install required. -->
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>H:\SteamLibrary\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
+    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="$(GameVersion)" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- LethalConfig: vendored DLL so the project builds on CI without a local r2modman profile. -->
+  <ItemGroup>
     <Reference Include="LethalConfig">
-      <HintPath>..\..\..\..\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\Cod3r Test Pack\BepInEx\plugins\AinaVT-LethalConfig\LethalConfig\LethalConfig.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Collections">
-      <HintPath>H:\SteamLibrary\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Netcode.Components">
-      <HintPath>H:\SteamLibrary\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Components.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Netcode.Runtime">
-      <HintPath>H:\SteamLibrary\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
+      <HintPath>Dependencies\LethalConfig.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
 
-  <!-- Allows us to use Rpc methods. See https://github.com/EvaisaDev/UnityNetcodePatcher -->
-  <!-- This MSBuild option does not work in Visual Studio, using cli option for now
-  <ItemGroup>
-    <PackageReference Include="Evaisa.NetcodePatcher.MSBuild" Version="3.*" PrivateAssets="all" />
-  </ItemGroup>
-  <ItemGroup>
-    <NetcodePatch Include="$(TargetPath)" />
-  </ItemGroup>
-  -->
-	<Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
-		<Exec Command="netcode-patch -uv 2022.3.62 -nv 1.12.0 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
-	</Target>
+  <!-- Restore the netcode-patch dotnet tool before patching -->
+  <Target Name="RestoreTools" BeforeTargets="NetcodePatch">
+    <Exec Command="dotnet tool restore" />
+  </Target>
 
-  <!-- Build our Thunderstore package when making a release build. This does not publish our package. -->
+  <!-- Re-inject Unity Netcode RPC/NetworkVariable plumbing post-build.
+       netcode 1.12.0 / transport 1.0.0 for game v73+ (v81 still on 1.12.0).
+       Deduped dependency directories avoid the Windows 8191-char command-line limit on CI. -->
+  <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
+    <ItemGroup>
+      <NetcodePatchDepDir Include="@(ReferencePathWithRefAssemblies-&gt;'%(RootDir)%(Directory)'-&gt;Distinct())" />
+    </ItemGroup>
+    <Exec Command="dotnet netcode-patch -uv 2022.3.62 -nv 1.12.0 -tv 1.0.0 &quot;$(TargetPath)&quot; @(NetcodePatchDepDir-&gt;'&quot;%(Identity).&quot;', ' ')" />
+  </Target>
 
 </Project>

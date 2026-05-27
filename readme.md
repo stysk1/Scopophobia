@@ -39,8 +39,8 @@ Upon arriving at SCP-096-1's location, <mark>SCP-096 will proceed to kill and â–
 - whatever else i think of lol
 
 # Credits
-- JasperCreations - Originally Developing Scopophobia for Lethal Company, Permission for the Uploaded source, and the unofficial update I did. 
-- TheUnknownCod3r (Myself) Updating the mod to v50. 
+- JasperCreations - Originally Developing Scopophobia for Lethal Company, and Permission for the Uploaded source.
+- stysk1 - Current maintainer; v81 update.
 - "SCP-096" by Dr Dan, from the SCP Wiki. Source: https://scpwiki.com/scp-096. Licensed under CC-BY-SA.
 - **Regalis** for creating **SCP: Containment Breach**.
 - **Omniary** and **FragdaddyXXL** for creating some sounds for **SCP: Containment Breach**.

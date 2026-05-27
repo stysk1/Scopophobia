@@ -1,3 +1,16 @@
+# 2.0.0
+## v81 modernization, new maintainer
++ Updated to Lethal Company **v81** (`LethalCompany.GameLibs.Steam` 81.0.5-ngd.0).
++ Netcode patcher bumped to **4.4.2** targeting netcode **1.12.0** / transport **1.0.0** / Unity **2022.3.62** (the v73 NGO upgrade).
++ Removed legacy `src/.config/dotnet-tools.json` that pinned an old patcher version and shadowed the root manifest.
++ Modernized `.csproj`, GitHub Actions release workflow, `deploy.ps1`, `package.ps1`, `nuget.config`.
++ `deploy.ps1` and `package.ps1` now run `dotnet tool restore` explicitly before build.
++ Now maintained by **stysk1**; r2modman plugin folder renamed `stysk1-Scopophobia`.
++ **Plugin GUID changed** from `Scopophobia` to `stysk1.Scopophobia`. BepInEx now writes the
+  config to `BepInEx/config/stysk1.Scopophobia.cfg`. Upgraders from 1.x will get a fresh
+  default config — copy your old `BepInEx/config/Scopophobia.cfg` over the new file if you
+  want to keep your previous settings.
+
 # 1.3.4
 ## v80 Spawn Fix
 + Fixes an error thrown when grabbing enemy data for the current Level. (Reported by @Glacius on Discord) 

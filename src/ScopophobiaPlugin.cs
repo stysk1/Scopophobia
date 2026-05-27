@@ -14,13 +14,13 @@ using BepInEx.Bootstrap;
 namespace Scopophobia
 {
 
-    [BepInPlugin("Scopophobia", "Scopophobia", "1.3.4")]
+    [BepInPlugin("stysk1.Scopophobia", "Scopophobia", "2.0.0")]
     [BepInDependency(LethalConfigProxy.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public class ScopophobiaPlugin : BaseUnityPlugin
     {
 
 
-        private readonly Harmony harmony = new Harmony("Scopophobia");
+        private readonly Harmony harmony = new Harmony("stysk1.Scopophobia");
 
         public static EnemyType shyGuy;
 
