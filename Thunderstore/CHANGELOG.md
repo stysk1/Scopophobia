@@ -1,3 +1,7 @@
+# 2.0.1
+## manifest update
++ Updated manifest.json mod description to get rid of the semicolon for proper mods.yml build
+
 # 2.0.0
 ## v81 modernization, new maintainer
 + Updated to Lethal Company **v81** (`LethalCompany.GameLibs.Steam` 81.0.5-ngd.0).
